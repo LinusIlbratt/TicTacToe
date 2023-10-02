@@ -6,8 +6,7 @@ public class Main {
         GameBoard board = new GameBoard();
         TicTacToeGame newGame = new TicTacToeGame();
 
-        newGame.playGame();
-
+        newGame.multiPlayer();
 
 
     }

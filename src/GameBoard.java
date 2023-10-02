@@ -1,5 +1,6 @@
 public class GameBoard {
-    private char[][] gameBoard; //
+    private char[][] gameBoard;
+    private int movesMade = 0; // Add a counter to the game
 
     // Constructor creates a 3x3 2D array with chars.
     // Each position is filled with 'space' that will represent an empty TicTacToe board.
@@ -19,7 +20,17 @@ public class GameBoard {
             return false;
         }
         gameBoard[row][col] = symbol;
+        movesMade++; // Increase the counter each time a move is made
         return true;
+    }
+
+    public boolean isBoardFull(){
+        if(movesMade >= 9){
+            System.out.println("Board is full");
+            return true;
+        }
+        System.out.println("Board is not full");
+        return false;
     }
 
 

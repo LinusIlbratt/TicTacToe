@@ -39,14 +39,31 @@ public class TicTacToeGame {
         }
     }
 
-    public void playGame() {
-        // While loop until game is over
-        playTurn(player1);
-        System.out.println(board);
-        // Check for win
-        playTurn(player2);
-        System.out.println(board);
-        // Check for win
+    public void multiPlayer() {
+        boolean gameIsRunning = true;
+
+        while (gameIsRunning) {
+            playTurn(player1);
+            System.out.println(board);
+
+            if (board.isBoardFull()) {
+                System.out.println("The game is a tie!");
+                gameIsRunning = false;
+                continue;
+            }
+
+            playTurn(player2);
+            System.out.println(board);
+
+            if (board.isBoardFull()) {
+                System.out.println("The game is a tie!");
+                gameIsRunning = false;
+            }
+        }
+    }
+
+    public boolean checkTie(){
+        return board.isBoardFull();
     }
 
 }
