@@ -13,9 +13,13 @@ public class GameBoard {
         };
     }
 
-
-    public void placePlayerSymbol(int row, int col, char symbol) {
+    //Method for the placement of the TicTac Symbols and to check to see if a position is free to place the player symbol.
+    public boolean placePlayerSymbol(int row, int col, char symbol) {
+        if (row < 0 || row > 4 || col < 0 || col > 8 || gameBoard[row][col] != ' ') {
+            return false;
+        }
         gameBoard[row][col] = symbol;
+        return true;
     }
 
 
