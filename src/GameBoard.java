@@ -1,5 +1,5 @@
 public class GameBoard {
-    private char[][] gameBoard;
+    private final char[][] gameBoard;
     private int movesMade = 0; // Add a counter to the game
 
     // Constructor creates a 3x3 2D array with chars.
@@ -24,13 +24,26 @@ public class GameBoard {
         return true;
     }
 
-    public boolean isBoardFull(){
-        if(movesMade >= 9){
+    public boolean isBoardFull() {
+        if (movesMade >= 9) {
             System.out.println("Board is full");
             return true;
         }
         System.out.println("Board is not full");
         return false;
+    }
+
+    public boolean winningCondition(char symbol) {
+        return (gameBoard[0][0] == symbol && gameBoard[0][4] == symbol && gameBoard[0][8] == symbol) ||
+                (gameBoard[2][0] == symbol && gameBoard[2][4] == symbol && gameBoard[2][8] == symbol) ||
+                (gameBoard[4][0] == symbol && gameBoard[4][4] == symbol && gameBoard[4][8] == symbol) ||
+
+                (gameBoard[0][0] == symbol && gameBoard[0][2] == symbol && gameBoard[0][4] == symbol) ||
+                (gameBoard[0][4] == symbol && gameBoard[2][4] == symbol && gameBoard[4][4] == symbol) ||
+                (gameBoard[0][8] == symbol && gameBoard[2][8] == symbol && gameBoard[4][8] == symbol) ||
+
+                (gameBoard[0][0] == symbol && gameBoard[2][4] == symbol && gameBoard[4][8] == symbol) ||
+                (gameBoard[0][8] == symbol && gameBoard[2][4] == symbol && gameBoard[4][0] == symbol);
     }
 
 
