@@ -10,10 +10,12 @@ public class TicTacToeGame {
         board = new GameBoard();
         sc = new Scanner(System.in);
         System.out.println("Ange namn för Player 1: ");
+        System.out.print("> ");
         String player1Name = sc.nextLine();
         player1 = new Player(player1Name, 'X');
 
         System.out.println("Ange namn för Player 2: ");
+        System.out.print("> ");
         String player2Name = sc.nextLine();
         player2 = new Player(player2Name, 'O');
     }
@@ -22,7 +24,9 @@ public class TicTacToeGame {
         boolean validPlacement = false;
         while (!validPlacement) {
             System.out.println(player.getPlayerName() + " enter your placement: 1-9");
+            System.out.print("> ");
             String playerPosition = sc.nextLine();
+
 
             switch (playerPosition) {
                 case "1" -> validPlacement = board.placePlayerSymbol(0, 0, player.getTicTacSymbol());
@@ -39,6 +43,19 @@ public class TicTacToeGame {
         }
     }
 
+    public void startGame(){
+        String playAgain;
+        do {
+            multiPlayer();
+            System.out.println(player1.getPlayerName() + " have " + player1.getTotalWins() + " total wins.");
+            System.out.println(player2.getPlayerName() + " have " + player2.getTotalWins() + " total wins.");
+            System.out.println("Do you want to play again? (y/n)");
+            playAgain = sc.nextLine().trim();
+            if (playAgain.equalsIgnoreCase("y")){
+            board.resetGameBoard();
+            }
+        } while(playAgain.equalsIgnoreCase("y"));
+    }
     public void multiPlayer() {
         boolean gameIsRunning = true;
 
@@ -48,6 +65,7 @@ public class TicTacToeGame {
 
             if (board.winningCondition(player1.getTicTacSymbol())){
                 System.out.println(player1.getPlayerName() + " is the winner!");
+                player1.incrementWins();
                 return; // Exit the method (Ending the game)
             }
 
@@ -62,6 +80,7 @@ public class TicTacToeGame {
 
             if (board.winningCondition(player2.getTicTacSymbol())){
                 System.out.println(player2.getPlayerName() + " is the winner!");
+                player2.incrementWins();
                 return; // Exit the method (Ending the game)
             }
 
