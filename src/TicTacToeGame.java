@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 public class TicTacToeGame {
-    private GameBoard board;
-    private Player player1;
-    private Player player2;
-    private Scanner sc;
+    private final GameBoard board;
+    private final Player player1;
+    private final Player player2;
+    private final Scanner sc;
 
-    public TicTacToeGame(){
+    public TicTacToeGame() {
         board = new GameBoard();
         sc = new Scanner(System.in);
         System.out.println("Ange namn för Player 1: ");
@@ -46,6 +46,11 @@ public class TicTacToeGame {
             playTurn(player1);
             System.out.println(board);
 
+            if (board.winningCondition(player1.getTicTacSymbol())){
+                System.out.println(player1.getPlayerName() + " is the winner!");
+                return; // Exit the method (Ending the game)
+            }
+
             if (board.isBoardFull()) {
                 System.out.println("The game is a tie!");
                 gameIsRunning = false;
@@ -55,6 +60,11 @@ public class TicTacToeGame {
             playTurn(player2);
             System.out.println(board);
 
+            if (board.winningCondition(player2.getTicTacSymbol())){
+                System.out.println(player2.getPlayerName() + " is the winner!");
+                return; // Exit the method (Ending the game)
+            }
+
             if (board.isBoardFull()) {
                 System.out.println("The game is a tie!");
                 gameIsRunning = false;
@@ -62,8 +72,15 @@ public class TicTacToeGame {
         }
     }
 
-    public boolean checkTie(){
+    // Return true if board is full otherwise it returns false
+    public boolean checkTie() {
         return board.isBoardFull();
     }
+//    Metod innan intellij ville göra om den då man kunde förenkla uttrycket av ett logiskt uttryck.
+//    if (board.isBoardFull()) {
+//        return true;
+//    } else {
+//        return false;
+//    }
 
 }
