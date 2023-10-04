@@ -2,8 +2,8 @@ public class GameBoard {
     private  char[][] gameBoard;
     private int movesMade = 0; // Add a counter to the game
 
-    // Constructor creates a 3x3 2D array with chars.
-    // Each position is filled with 'space' that will represent an empty TicTacToe board.
+     //Constructor creates a 3x3 2D array with chars.
+     //Each position is filled with 'space' that will represent an empty TicTacToe board.
     public GameBoard() {
         gameBoard = new char[][]{
                 {' ', ' ', '|', ' ', ' ', ' ', '|', ' ', ' '},
@@ -29,14 +29,15 @@ public class GameBoard {
     }
 
     public boolean winningCondition(char symbol) {
-        return (gameBoard[0][0] == symbol && gameBoard[0][4] == symbol && gameBoard[0][8] == symbol) ||
+        return  // Horizontal lines
+                (gameBoard[0][0] == symbol && gameBoard[0][4] == symbol && gameBoard[0][8] == symbol) ||
                 (gameBoard[2][0] == symbol && gameBoard[2][4] == symbol && gameBoard[2][8] == symbol) ||
                 (gameBoard[4][0] == symbol && gameBoard[4][4] == symbol && gameBoard[4][8] == symbol) ||
-
-                (gameBoard[0][0] == symbol && gameBoard[0][2] == symbol && gameBoard[0][4] == symbol) ||
+                // Vertical lines
+                (gameBoard[0][0] == symbol && gameBoard[2][0] == symbol && gameBoard[4][0] == symbol) ||
                 (gameBoard[0][4] == symbol && gameBoard[2][4] == symbol && gameBoard[4][4] == symbol) ||
                 (gameBoard[0][8] == symbol && gameBoard[2][8] == symbol && gameBoard[4][8] == symbol) ||
-
+                // Cross lines
                 (gameBoard[0][0] == symbol && gameBoard[2][4] == symbol && gameBoard[4][8] == symbol) ||
                 (gameBoard[0][8] == symbol && gameBoard[2][4] == symbol && gameBoard[4][0] == symbol);
     }
@@ -54,8 +55,8 @@ public class GameBoard {
     }
 
 
-    // Override the default toString method to provide a visual representation
-    // of my TicTacToe game board using the StringBuilder class.
+     //Override the default toString method to provide a visual representation
+     // of my TicTacToe game board using the StringBuilder class.
     @Override
     public String toString() {
         StringBuilder printBoard = new StringBuilder();

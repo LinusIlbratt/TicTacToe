@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        TicTacToeGame newGame = new TicTacToeGame();
+        TicTacToeGame newGame = new MultiPlayerGame();
         newGame.startGame();
     }
 }
