@@ -2,10 +2,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player{
-    private Scanner sc = new Scanner(System.in);
 
-    public HumanPlayer(String playerName, char gameSymbol) {
+    private Scanner sc;
+
+    public HumanPlayer(String playerName, char gameSymbol, Scanner sc) {
         super(playerName, gameSymbol);
+        this.sc = sc;
     }
 
 
@@ -19,7 +21,6 @@ public class HumanPlayer extends Player{
         while (!validInput) {
             try {
                 String input = sc.nextLine().toUpperCase();
-
 
                 char colChar = input.charAt(0);
                 if (colChar < 'A' || colChar >= 'A' + gameBoard.getBoardSize()) {
@@ -47,6 +48,5 @@ public class HumanPlayer extends Player{
 
         return playerMove;
     }
-
 
 }

@@ -5,7 +5,9 @@ public class GameManager {
     private Player currentPlayer;
     private Player player1;
     private Player player2;
-    private Scanner sc = new Scanner(System.in);
+
+    private final Scanner sc = new Scanner(System.in);
+    private boolean gameIsRunning;
 
 
     public GameManager() {
@@ -24,29 +26,30 @@ public class GameManager {
     }
 
     public void initializePlayers(boolean isSinglePlayer) {
+
         if (isSinglePlayer) {
             System.out.println("Enter your name:");
             String playerName = sc.next();
-            this.player1 = new HumanPlayer(playerName, 'X');
+            this.player1 = new HumanPlayer(playerName, 'X', sc);
             this.player2 = new ComputerPlayer("Computer", 'O');
         } else {
             System.out.println("Enter name for Player 1:");
             String player1Name = sc.next();
             System.out.println("Enter name for Player 2:");
             String player2Name = sc.next();
-            this.player1 = new HumanPlayer(player1Name, 'X');
-            this.player2 = new HumanPlayer(player2Name, 'O');
+            this.player1 = new HumanPlayer(player1Name, 'X', sc);
+            this.player2 = new HumanPlayer(player2Name, 'O', sc);
         }
         this.currentPlayer = this.player1;
     }
 
-    public void displayTotalWins(){
+    public void displayTotalWins() {
         System.out.println("This is the current score for the game: ");
         System.out.println(player1.getPlayerName() + ": " + player1.getTotalWins() + " wins.");
         System.out.println(player2.getPlayerName() + ": " + player2.getTotalWins() + " wins.");
     }
 
-    public void startGame() {
+    public void gameLoop() {
         boolean gameIsRunning = true;
         while (gameIsRunning) {
             // Display the board
@@ -67,8 +70,25 @@ public class GameManager {
                 switchPlayer();
             }
         }
-        // Show result and number of wins
-        displayTotalWins();
+    }
+
+
+    public void startGame() {
+        String playAgain;
+        do {
+            gameLoop();
+
+            System.out.println(player1.getPlayerName() + " have " + player1.getTotalWins() + " total wins.");
+            System.out.println(player2.getPlayerName() + " have " + player2.getTotalWins() + " total wins.");
+
+            System.out.println("Do you want to play again? (y/n)");
+
+            playAgain = sc.nextLine().trim();
+            if (playAgain.equalsIgnoreCase("y")) {
+                gameBoard.resetGameBoard();
+            }
+        } while (playAgain.equalsIgnoreCase("y"));
+
     }
 
     public void displayMenu() {
