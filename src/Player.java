@@ -28,6 +28,6 @@ public abstract class Player {
         this.totalWins++;
     }
 
-    public abstract int[] makeMove(GameBoard gameBoard);
+    public abstract int[] makeMove(GameBoard gameBoard); // Abstract method. All subclasses must have this method in their class
 
 }
