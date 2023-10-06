@@ -98,39 +98,31 @@ public class GameManager {
         System.out.println("2. Multiplayer");
 
         int userChoice = sc.nextInt();
+        sc.nextLine(); // Empty the buffer
         switch (userChoice) {
-            case 1:
-                initializePlayers(true); // True indicates singel player
-                break;
-            case 2:
-                initializePlayers(false); // False indicates multiplayer
-                break;
-            default:
+            case 1 -> initializePlayers(true); // True indicates singel player
+            case 2 -> initializePlayers(false); // False indicates multiplayer
+            default -> {
                 System.out.println("Invalid choice. Try again.");
                 displayMenu();
-                break;
+            }
         }
 
         System.out.println("Select your board size:");
-        System.out.println("1. 3x3");
-        System.out.println("2. 4x4");
-        System.out.println("3. 5x5");
+        System.out.println("1. 3x3 (Classic 3 in a row");
+        System.out.println("2. 4x4 (4 in a row");
+        System.out.println("3. 5x5 (5 in a row");
 
         int boardSizeChoice = sc.nextInt();
+        sc.nextLine(); // Empty the buffer
         switch (boardSizeChoice) {
-            case 1:
-                gameBoard = new GameBoard(3); // Initiates the board size to 3x3.
-                break;
-            case 2:
-                gameBoard = new GameBoard(4); // Initiates the board size to 4x4.
-                break;
-            case 3:
-                gameBoard = new GameBoard(5); // Initiates the board size to 5x5.
-                break;
-            default:
+            case 1 -> gameBoard = new GameBoard(3); // Initiates the board size to 3x3.
+            case 2 -> gameBoard = new GameBoard(4); // Initiates the board size to 4x4.
+            case 3 -> gameBoard = new GameBoard(5); // Initiates the board size to 5x5.
+            default -> {
                 System.out.println("Invalid board size choice. Try again");
                 displayMenu();
-                break;
+            }
         }
     }
 
