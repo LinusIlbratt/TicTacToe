@@ -1,46 +1,33 @@
-public class Player {
+public abstract class Player {
     private String playerName;
-    private char ticTacSymbol;
+    private char gameSymbol;
+    private int totalWins;
 
-    private int totalWins = 0;
-
-    public Player(String playerName, char ticTacSymbol) {
+    public Player(String playerName, char gameSymbol) {
         this.playerName = playerName;
-        this.ticTacSymbol = ticTacSymbol;
-
+        this.gameSymbol = gameSymbol;
+        this.totalWins = 0;
     }
 
-    public String getPlayerName() {
+    public String getPlayerName(){
         return playerName;
     }
-
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public char getTicTacSymbol() {
-        return ticTacSymbol;
-    }
-
-    public void setTicTacSymbol(char ticTacSymbol) {
-        this.ticTacSymbol = ticTacSymbol;
-    }
-
-    public void incrementWins(){
-        totalWins++;
+    public char getGameSymbol(){
+        return gameSymbol;
     }
 
     public int getTotalWins(){
         return totalWins;
     }
 
-    public String getColorCode() {
-        if (ticTacSymbol == 'X') {
-            return TextColor.ANSI_RED;
-        } else if (ticTacSymbol == 'O') {
-            return TextColor.ANSI_BLUE;
-        } else {
-            return TextColor.ANSI_RESET;  // Default color
-        }
+    public void incrementWins() {
+        this.totalWins++;
     }
+
+    public abstract int[] makeMove(GameBoard gameBoard);
+
 }
