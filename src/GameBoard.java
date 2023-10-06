@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameBoard {
-    private ArrayList<ArrayList<Character>> gameBoard;
-    private int boardSize;
+    private final ArrayList<ArrayList<Character>> gameBoard;
+    private final int boardSize;
 
     // Constructor that initiates an empty dynamic board
     public GameBoard(int boardSize){
@@ -21,11 +21,6 @@ public class GameBoard {
 
     public int getBoardSize() {
         return boardSize;
-    }
-
-    public boolean isEmpty(int row, int col) {
-        boolean empty = gameBoard.get(row).get(col) == ' ';
-        return empty;
     }
 
     public void placeMove(int row, int col, char gameSymbol) {
@@ -47,6 +42,11 @@ public class GameBoard {
             }
         }
         return true;
+    }
+
+    public boolean isEmpty(int row, int col) {
+        boolean empty = gameBoard.get(row).get(col) == ' ';
+        return empty;
     }
 
     public boolean hasWinner() {
@@ -74,22 +74,30 @@ public class GameBoard {
         return true;
     }
 
+    public void resetGameBoard() {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                gameBoard.get(i).set(j, ' ');
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder printBoard = new StringBuilder();
 
-        // Skriv ut kolumnbokstäverna överst
-        printBoard.append("  ");
+        // Printing letters for the top in the color orange
+        printBoard.append(GameColors.COORDINATE_COLOR + "  ");
         for (int col = 0; col < boardSize; col++) {
             char colLetter = (char) ('A' + col);
             printBoard.append(" ").append(colLetter).append(" ");
         }
-        printBoard.append('\n');
+        printBoard.append(GameColors.ANSI_RESET + '\n');
 
 
         for (int i = 0; i < boardSize; i++) {
-            // Print row numbers
-            printBoard.append(String.format("%2d ", i + 1));
+            // Print row numbers in orange
+            printBoard.append(GameColors.COORDINATE_COLOR).append(String.format("%2d ", i + 1)).append(GameColors.ANSI_RESET);
             for (int j = 0; j < boardSize; j++) {
                 printBoard.append(gameBoard.get(i).get(j));
                 if (j < boardSize - 1) {
