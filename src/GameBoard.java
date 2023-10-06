@@ -6,7 +6,7 @@ public class GameBoard {
     private final int boardSize;
 
     // Constructor that initiates an empty dynamic board
-    public GameBoard(int boardSize){
+    public GameBoard(int boardSize) {
         this.boardSize = boardSize;
         this.gameBoard = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class GameBoard {
         // Checking rows and columns
         for (int i = 0; i < boardSize; i++) {
             if (isWinningLine(0, i, 1, 0) || // Columns
-            isWinningLine(i, 0, 0, 1)) {     // Rows
+                    isWinningLine(i, 0, 0, 1)) {     // Rows
                 return true;
             }
         }
@@ -99,7 +99,18 @@ public class GameBoard {
             // Print row numbers in orange
             printBoard.append(GameColors.COORDINATE_COLOR).append(String.format("%2d ", i + 1)).append(GameColors.ANSI_RESET);
             for (int j = 0; j < boardSize; j++) {
-                printBoard.append(gameBoard.get(i).get(j));
+
+                // Coloring the symbols on the game board
+                char currentGameSymbol = gameBoard.get(i).get(j);
+                if (currentGameSymbol == 'X') {
+                    printBoard.append(GameColors.PLAYER1_COLOR).append(currentGameSymbol).append(GameColors.ANSI_RESET);
+                } else if (currentGameSymbol == 'O') {
+                    printBoard.append(GameColors.PLAYER2_COLOR).append(currentGameSymbol).append(GameColors.ANSI_RESET);
+                } else {
+                    printBoard.append(currentGameSymbol);
+                }
+
+
                 if (j < boardSize - 1) {
                     printBoard.append(" |");
                 }
