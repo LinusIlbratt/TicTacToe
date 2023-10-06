@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public ComputerPlayer(String playerName, char gameSymbol) {
         super(playerName, gameSymbol);
@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player {
         } while (!gameBoard.isEmpty(row, col));
 
         gameBoard.placeMove(row, col, getGameSymbol());
-
+        System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
         return new int[]{row, col};
     }
 

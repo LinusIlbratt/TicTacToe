@@ -15,7 +15,6 @@ public class HumanPlayer extends Player{
         int[] playerMove = new int[2];
         boolean validInput = false;
 
-        System.out.println("Current player is :" + getPlayerName());
         System.out.println(getPlayerName() + " make your move (format: A1, B2, ...): ");
 
         while (!validInput) {
@@ -36,7 +35,7 @@ public class HumanPlayer extends Player{
                     playerMove[1] = col;
                     validInput = true;
 
-                    System.out.println(getPlayerName() + " has chosen " + input);
+                    System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
                     gameBoard.placeMove(row, col, getGameSymbol());
                 } else {
                     System.out.println("Invalid move. Please enter a move within the board's bounds.");
