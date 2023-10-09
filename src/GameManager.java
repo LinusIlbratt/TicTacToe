@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GameManager {
@@ -27,16 +28,19 @@ public class GameManager {
 
     public void initializePlayers(boolean isSinglePlayer) {
 
+        // Initializes players based on the game mode (single or multiplayer)
         if (isSinglePlayer) {
             System.out.println("Enter your name:");
-            String playerName = sc.next();
-            this.player1 = new HumanPlayer(playerName, 'X', sc);
+            String player1Name = sc.next();
+            this.player1 = new HumanPlayer(player1Name, 'X', sc);
             this.player2 = new ComputerPlayer("Computer", 'O');
         } else {
             System.out.println("Enter name for Player 1:");
             String player1Name = sc.next();
+
             System.out.println("Enter name for Player 2:");
             String player2Name = sc.next();
+
             this.player1 = new HumanPlayer(player1Name, 'X', sc);
             this.player2 = new HumanPlayer(player2Name, 'O', sc);
         }
@@ -44,7 +48,7 @@ public class GameManager {
     }
 
     public void displayTotalWins() {
-        System.out.println("This is the current score for the game: ");
+        System.out.println("Current score: ");
         System.out.println(player1.getPlayerName() + ": " + player1.getTotalWins() + " wins.");
         System.out.println(player2.getPlayerName() + ": " + player2.getTotalWins() + " wins.");
     }
@@ -55,32 +59,30 @@ public class GameManager {
             // Display the board
             System.out.println(gameBoard);
 
-            // Let the current player make a move
+            // Let the current player make a move by calling the makeMove function
+            System.out.println("Current player is: " + currentPlayer.getPlayerName());
             currentPlayer.makeMove(gameBoard);
 
             // Check if a player has won or if the board is full, then it's a tie
-            if (gameBoard.hasWinner()) {
+            if (gameBoard.checkWinner()) {
                 System.out.println(currentPlayer.getPlayerName() + " has won!");
                 currentPlayer.incrementWins();
                 gameIsRunning = false;
-            } else if (gameBoard.isFull()) {
+            } else if (gameBoard.isGameBoardFull()) {
                 System.out.println("It's a tie!");
                 gameIsRunning = false;
             } else {
+                // Switching players by calling the switchPlayer method
                 switchPlayer();
             }
         }
     }
 
-
     public void startGame() {
         String playAgain;
         do {
             gameLoop();
-
-            System.out.println(player1.getPlayerName() + " have " + player1.getTotalWins() + " total wins.");
-            System.out.println(player2.getPlayerName() + " have " + player2.getTotalWins() + " total wins.");
-
+            displayTotalWins();
             System.out.println("Do you want to play again? (y/n)");
 
             playAgain = sc.nextLine().trim();
@@ -91,39 +93,63 @@ public class GameManager {
 
     }
 
+    public void chooseGameBoardSize(){
+        boolean invalidUserChoice;
+
+        do {
+            invalidUserChoice = false;
+            System.out.println("Select your board size.");
+            System.out.println("3. 3x3");
+            System.out.println("4. 4x4");
+            System.out.println("5. 5x5");
+            System.out.print("> ");
+
+            try {
+                int userBoardChoice = sc.nextInt();
+                sc.nextLine(); // Clear the buffer
+
+                if (userBoardChoice >= 3 && userBoardChoice <= 5) {
+                    gameBoard = new GameBoard(userBoardChoice);
+                } else {
+                    invalidUserChoice = true;
+                }
+            } catch (InputMismatchException e) {
+                sc.nextLine(); // Clear the buffer
+                invalidUserChoice = true;
+            }
+
+            if (invalidUserChoice) {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        } while (invalidUserChoice);
+    }
+
     public void displayMenu() {
         System.out.println("Welcome to TicTacToe!");
-        System.out.println("Choose your game mode");
-        System.out.println("1. Singel Player");
-        System.out.println("2. Multiplayer");
 
-        int userChoice = sc.nextInt();
-        sc.nextLine(); // Empty the buffer
-        switch (userChoice) {
-            case 1 -> initializePlayers(true); // True indicates singel player
-            case 2 -> initializePlayers(false); // False indicates multiplayer
-            default -> {
-                System.out.println("Invalid choice. Try again.");
-                displayMenu();
+        int userChoice = 0;
+
+        while (userChoice < 1 || userChoice > 2) {
+            System.out.println("Choose your game mode");
+            System.out.println("1. Single Player");
+            System.out.println("2. Multiplayer");
+
+            if (sc.hasNextInt()) {
+                userChoice = sc.nextInt();
+            } else {
+                System.out.println("Invalid choice. Enter a number.");
+                sc.next(); // Consume the invalid input
+            }
+
+            sc.nextLine(); // Empty the buffer
+
+            switch (userChoice) {
+                case 1 -> initializePlayers(true);
+                case 2 -> initializePlayers(false);
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
-
-        System.out.println("Select your board size:");
-        System.out.println("1. 3x3 (Classic 3 in a row");
-        System.out.println("2. 4x4 (4 in a row");
-        System.out.println("3. 5x5 (5 in a row");
-
-        int boardSizeChoice = sc.nextInt();
-        sc.nextLine(); // Empty the buffer
-        switch (boardSizeChoice) {
-            case 1 -> gameBoard = new GameBoard(3); // Initiates the board size to 3x3.
-            case 2 -> gameBoard = new GameBoard(4); // Initiates the board size to 4x4.
-            case 3 -> gameBoard = new GameBoard(5); // Initiates the board size to 5x5.
-            default -> {
-                System.out.println("Invalid board size choice. Try again");
-                displayMenu();
-            }
-        }
+        chooseGameBoardSize();
     }
 
 }
