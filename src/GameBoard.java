@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class GameBoard {
     private final ArrayList<ArrayList<Character>> gameBoard;
@@ -23,20 +22,20 @@ public class GameBoard {
         return boardSize;
     }
 
-    public void placeMove(int row, int col, char gameSymbol) {
+    public void placePlayerMove(int row, int col, char gameSymbol) {
         // Places a game symbol on the board if the cell is empty
-        if (isEmpty(row, col)) {
+        if (isGameBoardEmpty(row, col)) {
             gameBoard.get(row).set(col, gameSymbol);
         } else {
             System.out.println("Could not place " + gameSymbol);
         }
     }
 
-    public boolean isFull() {
+    public boolean isGameBoardFull() {
         // Check to see if the board is full
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                if (isEmpty(i, j)) {
+                if (isGameBoardEmpty(i, j)) {
                     return false;
                 }
             }
@@ -44,25 +43,25 @@ public class GameBoard {
         return true;
     }
 
-    public boolean isEmpty(int row, int col) {
+    public boolean isGameBoardEmpty(int row, int col) {
         boolean empty = gameBoard.get(row).get(col) == ' ';
         return empty;
     }
 
-    public boolean hasWinner() {
+    public boolean checkWinner() {
         // Checking rows and columns
         for (int i = 0; i < boardSize; i++) {
-            if (isWinningLine(0, i, 1, 0) || // Columns
-                    isWinningLine(i, 0, 0, 1)) {     // Rows
+            if (checkWinningLines(0, i, 1, 0) || // Columns
+                    checkWinningLines(i, 0, 0, 1)) {     // Rows
                 return true;
             }
         }
         // Checking the crosses (diagonals)
-        return isWinningLine(0, 0, 1, 1) ||  // First diagonal
-                isWinningLine(0, boardSize - 1, 1, -1); // Second diagonal
+        return checkWinningLines(0, 0, 1, 1) ||  // First diagonal
+                checkWinningLines(0, boardSize - 1, 1, -1); // Second diagonal
     }
 
-    private boolean isWinningLine(int startX, int startY, int stepX, int stepY) {
+    private boolean checkWinningLines(int startX, int startY, int stepX, int stepY) {
         char gameSymbol = gameBoard.get(startX).get(startY);
         if (gameSymbol == ' ') return false;
 
@@ -82,8 +81,7 @@ public class GameBoard {
         }
     }
 
-    @Override
-    public String toString() {
+    public String displayGameBoard() {
         StringBuilder printBoard = new StringBuilder();
 
         // Printing letters for the top in the color orange
@@ -129,5 +127,9 @@ public class GameBoard {
         return printBoard.toString();
     }
 
+    @Override
+    public String toString() {
+        return displayGameBoard();
+    }
 
 }
