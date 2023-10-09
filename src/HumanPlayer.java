@@ -1,4 +1,4 @@
-import java.util.List;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player{
@@ -10,38 +10,66 @@ public class HumanPlayer extends Player{
         this.sc = sc;
     }
 
+    public static HumanPlayer createHumanPlayer(char gameSymbol, Scanner sc){
+        String playerName;
+        do {
+            if (gameSymbol == 'X'){
+                System.out.println("Enter the name for Player 1:");
+            } else {
+                System.out.println("Enter the name for Player 2:");
+            }
+            System.out.print("> ");
+            playerName = sc.nextLine().trim();
+        } while (!isValidPlayerName(playerName));
 
-    public int[] makeMove(GameBoard gameBoard) {
-        int[] playerMove = new int[2];
-        boolean validInput = false;
+        return new HumanPlayer(playerName, gameSymbol, sc);
+    }
 
-        System.out.println(getPlayerName() + " make your move (format: A1, B2, ...): ");
+    private static boolean isValidPlayerName(String playerName) {
+
+        if (playerName == null || playerName.isEmpty()) {
+            System.out.println("Name can't be empty.");
+            return false;
+        }
+
+        if (!playerName.matches("[\\p{L} '-]+")) {
+            System.out.println("Name can only contain letters, spaces, hyphens and apostrophes.");
+            return false;
+        }
+
+        if (playerName.matches(".*\\d.*")){
+            System.out.println("Name can't contain numbers.");
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public int[] makeMove(GameBoard gameBoard){
+        int[] playerMove = new int[2]; // Initiates and int array that will store the chosen row & column.
+        boolean validInput = false; // boolean to check a valid input from the user
 
         while (!validInput) {
+            System.out.println(getPlayerName() + " make your move (format: A1, B2, ....):");
+            String userInput = sc.nextLine().toUpperCase(); // converts input so user can write a1 or A1
+
             try {
-                String input = sc.nextLine().toUpperCase();
+                int col = userInput.charAt(0) - 'A'; // Takes the first letter from user and converts it to column index, A->0, B->1...
+                int row = Integer.parseInt(userInput.substring(1)) - 1; // Converts the remaining String to an int and subtract with 1 to get row index.
 
-                char colChar = input.charAt(0);
-                if (colChar < 'A' || colChar >= 'A' + gameBoard.getBoardSize()) {
-                    throw new IllegalArgumentException("Invalid column");
-                }
-                int col = colChar - 'A';
-
-
-                int row = Integer.parseInt(input.substring(1)) - 1;
-
-                if (row >= 0 && row < gameBoard.getBoardSize() && col >= 0 && col < gameBoard.getBoardSize()) {
+                if (row >= 0 && row < gameBoard.getBoardSize() && col >= 0 && col < gameBoard.getBoardSize()) { // Check to se if row and column is not out of bound.
                     playerMove[0] = row;
                     playerMove[1] = col;
                     validInput = true;
 
                     System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
-                    gameBoard.placeMove(row, col, getGameSymbol());
+                    gameBoard.placePlayerMove(row, col, getGameSymbol());
                 } else {
-                    System.out.println("Invalid move. Please enter a move within the board's bounds.");
+                    System.out.println("Invalid move. Please enter a move within the board's bounds");
                 }
             } catch (StringIndexOutOfBoundsException | IllegalArgumentException e) {
-                System.out.println("Invalid input. Please enter in the format 'A1', 'B2', etc.");
+                System.out.println("Invalid input. Please enter the correct format 'A1', 'B2', etc.");
             }
         }
 
