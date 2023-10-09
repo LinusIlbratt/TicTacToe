@@ -26,25 +26,16 @@ public class GameManager {
         }
     }
 
-    public void initializePlayers(boolean isSinglePlayer) {
+    public void initializeSinglePlayer() {
+        this.player1 = HumanPlayer.createHumanPlayer('X', sc);
+        this.player2 = new ComputerPlayer("Computer", 'O');
+        this.currentPlayer = player1;
+    }
 
-        // Initializes players based on the game mode (single or multiplayer)
-        if (isSinglePlayer) {
-            System.out.println("Enter your name:");
-            String player1Name = sc.next();
-            this.player1 = new HumanPlayer(player1Name, 'X', sc);
-            this.player2 = new ComputerPlayer("Computer", 'O');
-        } else {
-            System.out.println("Enter name for Player 1:");
-            String player1Name = sc.next();
-
-            System.out.println("Enter name for Player 2:");
-            String player2Name = sc.next();
-
-            this.player1 = new HumanPlayer(player1Name, 'X', sc);
-            this.player2 = new HumanPlayer(player2Name, 'O', sc);
-        }
-        this.currentPlayer = this.player1;
+    public void initializeMultiplayer(){
+        this.player1 = HumanPlayer.createHumanPlayer('X', sc);
+        this.player2 = HumanPlayer.createHumanPlayer('O', sc);
+        this.currentPlayer = player1;
     }
 
     public void displayTotalWins() {
@@ -124,33 +115,36 @@ public class GameManager {
         } while (invalidUserChoice);
     }
 
-    public void displayMenu() {
+    public void gameMenu() {
         System.out.println("Welcome to TicTacToe!");
 
-        int userChoice = 0;
-
-        while (userChoice < 1 || userChoice > 2) {
+        while (true) {
             System.out.println("Choose your game mode");
             System.out.println("1. Single Player");
             System.out.println("2. Multiplayer");
 
-            if (sc.hasNextInt()) {
-                userChoice = sc.nextInt();
-            } else {
+            String input = sc.nextLine().trim(); // Read the entire line
+
+            try {
+                int userChoice = Integer.parseInt(input);
+
+                if (userChoice == 1) {
+                    initializeSinglePlayer();
+                    break;
+                } else if (userChoice == 2) {
+                    initializeMultiplayer();
+                    break;
+                } else {
+                    System.out.println("Invalid choice. Try again.");
+                }
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid choice. Enter a number.");
-                sc.next(); // Consume the invalid input
-            }
-
-            sc.nextLine(); // Empty the buffer
-
-            switch (userChoice) {
-                case 1 -> initializePlayers(true);
-                case 2 -> initializePlayers(false);
-                default -> System.out.println("Invalid choice. Try again.");
             }
         }
+
         chooseGameBoardSize();
     }
+
 
 }
 
