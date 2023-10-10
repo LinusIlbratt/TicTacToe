@@ -155,6 +155,11 @@ public class GameManager {
     public void initializeMultiplayer() {
         this.player1 = HumanPlayer.createHumanPlayer('X', sc);
         this.player2 = HumanPlayer.createHumanPlayer('O', sc);
+
+        if (player1.getPlayerName().equals(player2.getPlayerName())) {
+            System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + " 2.");
+            player2.setPlayerName(player2.getPlayerName() + " 2");
+        }
         this.startingPlayer = player1;
         this.currentPlayer = startingPlayer;
     }
