@@ -3,9 +3,10 @@ import java.util.Scanner;
 
 public class GameManager {
     private GameBoard gameBoard;
-    private Player currentPlayer;
     private Player player1;
     private Player player2;
+    private Player currentPlayer;
+    private Player startingPlayer;
 
     private final Scanner sc = new Scanner(System.in);
     private boolean gameIsRunning;
@@ -29,13 +30,15 @@ public class GameManager {
     public void initializeSinglePlayer() {
         this.player1 = HumanPlayer.createHumanPlayer('X', sc);
         this.player2 = new ComputerPlayer("Computer", 'O');
-        this.currentPlayer = player1;
+        this.startingPlayer = player1;
+        this.currentPlayer = startingPlayer;
     }
 
     public void initializeMultiplayer(){
         this.player1 = HumanPlayer.createHumanPlayer('X', sc);
         this.player2 = HumanPlayer.createHumanPlayer('O', sc);
-        this.currentPlayer = player1;
+        this.startingPlayer = player1;
+        this.currentPlayer = startingPlayer;
     }
 
     public void displayTotalWins() {
@@ -78,6 +81,12 @@ public class GameManager {
 
             playAgain = sc.nextLine().trim();
             if (playAgain.equalsIgnoreCase("y")) {
+                if (startingPlayer == player1) {
+                    startingPlayer = player2;
+                } else {
+                    startingPlayer = player1;
+                }
+                currentPlayer = startingPlayer; // Set the currentPlayer to the new starting player
                 gameBoard.resetGameBoard();
             }
         } while (playAgain.equalsIgnoreCase("y"));
