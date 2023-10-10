@@ -58,7 +58,7 @@ public class HumanPlayer extends Player {
                 if (row >= 0 && row < gameBoard.getBoardSize() && col >= 0 && col < gameBoard.getBoardSize()) { // Check to se if row and column is not out of bound.
                     validInput = true;
 
-                    System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
+                    System.out.println(getPlayerName() + " has chosen " + GameBoard.coordinatesToString(row, col));
                     gameBoard.placePlayerMove(row, col, getGameSymbol());
                 } else {
                     System.out.println("Invalid move. Please enter a move within the board's bounds");

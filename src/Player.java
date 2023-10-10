@@ -31,9 +31,4 @@ public abstract class Player {
 
     public abstract void makeMove(GameBoard gameBoard); // Abstract method. All subclasses must have this method
 
-    protected String coordinatesToString(int row, int col) {
-        char columnChar = (char) ('A' + col);
-        return columnChar + String.valueOf(row + 1);
-    }
-
 }

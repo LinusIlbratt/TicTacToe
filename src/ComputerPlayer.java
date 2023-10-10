@@ -18,7 +18,7 @@ public class ComputerPlayer extends Player {
         } while (!gameBoard.isGameBoardEmpty(row, col));
 
         gameBoard.placePlayerMove(row, col, getGameSymbol());
-        System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
+        System.out.println(getPlayerName() + " has chosen " + GameBoard.coordinatesToString(row, col));
     }
 
 }

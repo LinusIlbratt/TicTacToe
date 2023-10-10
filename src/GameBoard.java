@@ -126,6 +126,10 @@ public class GameBoard {
         return printBoard.toString();
     }
 
+    public static String coordinatesToString(int row, int col) {
+        char columnChar = (char) ('A' + col);
+        return columnChar + String.valueOf(row + 1);
+    }
     @Override
     public String toString() {
         return displayGameBoard();
