@@ -9,18 +9,19 @@ public abstract class Player {
         this.totalWins = 0;
     }
 
-    public String getPlayerName(){
+    public String getPlayerName() {
         return playerName;
     }
+
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public char getGameSymbol(){
+    public char getGameSymbol() {
         return gameSymbol;
     }
 
-    public int getTotalWins(){
+    public int getTotalWins() {
         return totalWins;
     }
 
@@ -28,7 +29,7 @@ public abstract class Player {
         this.totalWins++;
     }
 
-    public abstract int[] makeMove(GameBoard gameBoard); // Abstract method. All subclasses must have this method
+    public abstract void makeMove(GameBoard gameBoard); // Abstract method. All subclasses must have this method
 
     protected String coordinatesToString(int row, int col) {
         char columnChar = (char) ('A' + col);

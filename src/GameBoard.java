@@ -44,8 +44,7 @@ public class GameBoard {
     }
 
     public boolean isGameBoardEmpty(int row, int col) {
-        boolean empty = gameBoard.get(row).get(col) == ' ';
-        return empty;
+        return gameBoard.get(row).get(col) == ' ';
     }
 
     public boolean checkWinner() {

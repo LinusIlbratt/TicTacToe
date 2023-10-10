@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
@@ -9,18 +8,17 @@ public class ComputerPlayer extends Player {
     }
 
 
-    public int[] makeMove(GameBoard gameBoard) {
+    public void makeMove(GameBoard gameBoard) {
         int boardSize = gameBoard.getBoardSize();
         int row, col;
 
         do {
             row = random.nextInt(boardSize);
             col = random.nextInt(boardSize);
-        } while (!gameBoard.isEmpty(row, col));
+        } while (!gameBoard.isGameBoardEmpty(row, col));
 
-        gameBoard.placeMove(row, col, getGameSymbol());
+        gameBoard.placePlayerMove(row, col, getGameSymbol());
         System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
-        return new int[]{row, col};
     }
 
 }
