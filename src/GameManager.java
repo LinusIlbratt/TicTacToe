@@ -115,15 +115,32 @@ public class GameManager {
         } while (invalidUserChoice);
     }
 
+    public void displayRules(){
+        System.out.println("""
+                Rules:
+                               
+                The game is played on a grid that's 3x3 (or large if chosen).
+                Player 1 is X and Player 2 is 0.
+                Players take turns putting their symbols on the grid.
+                The first player to get 3 (or the board size) of their symbols in a row (up, down, across, or diagonally) wins.
+                If all the cells on the grid are filled and no player has their symbols in a row, then the game is a tie.
+                """);
+    }
+
     public void gameMenu() {
-        System.out.println("Welcome to TicTacToe!");
+        System.out.println("Welcome to TicTacToe!\n");
+
+        displayRules();
+
+        System.out.println("Press Enter to continue...");
+        sc.nextLine(); // This will wait for the user to press any key
 
         while (true) {
             System.out.println("Choose your game mode");
             System.out.println("1. Single Player");
             System.out.println("2. Multiplayer");
 
-            String input = sc.nextLine().trim(); // Read the entire line
+            String input = sc.nextLine().trim();
 
             try {
                 int userChoice = Integer.parseInt(input);
