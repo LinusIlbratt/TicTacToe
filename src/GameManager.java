@@ -59,7 +59,7 @@ public class GameManager {
 
             // Check if a player has won or if the board is full, then it's a tie
             if (gameBoard.checkWinner()) {
-                System.out.println(currentPlayer.getPlayerName() + " has won!");
+                System.out.println(currentPlayer.getPlayerName() + " has won!\n");
                 currentPlayer.incrementWins();
                 gameIsRunning = false;
             } else if (gameBoard.isGameBoardFull()) {
@@ -78,6 +78,7 @@ public class GameManager {
             gameLoop();
             displayTotalWins();
             System.out.println("Do you want to play again? (y/n)");
+            System.out.print("> ");
 
             playAgain = sc.nextLine().trim();
             if (playAgain.equalsIgnoreCase("y")) {
@@ -148,6 +149,7 @@ public class GameManager {
             System.out.println("Choose your game mode");
             System.out.println("1. Single Player");
             System.out.println("2. Multiplayer");
+            System.out.print("> ");
 
             String input = sc.nextLine().trim();
 

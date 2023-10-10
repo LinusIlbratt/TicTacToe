@@ -1,7 +1,6 @@
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
-public class HumanPlayer extends Player{
+public class HumanPlayer extends Player {
 
     private Scanner sc;
 
@@ -10,10 +9,10 @@ public class HumanPlayer extends Player{
         this.sc = sc;
     }
 
-    public static HumanPlayer createHumanPlayer(char gameSymbol, Scanner sc){
+    public static HumanPlayer createHumanPlayer(char gameSymbol, Scanner sc) {
         String playerName;
         do {
-            if (gameSymbol == 'X'){
+            if (gameSymbol == 'X') {
                 System.out.println("Enter the name for Player 1:");
             } else {
                 System.out.println("Enter the name for Player 2:");
@@ -37,21 +36,19 @@ public class HumanPlayer extends Player{
             return false;
         }
 
-        if (playerName.matches(".*\\d.*")){
+        if (playerName.matches(".*\\d.*")) {
             System.out.println("Name can't contain numbers.");
             return false;
         }
         return true;
     }
 
-
-
-    public int[] makeMove(GameBoard gameBoard){
-        int[] playerMove = new int[2]; // Initiates and int array that will store the chosen row & column.
+    public void makeMove(GameBoard gameBoard) {
         boolean validInput = false; // boolean to check a valid input from the user
 
         while (!validInput) {
             System.out.println(getPlayerName() + " make your move (format: A1, B2, ....):");
+            System.out.print("> ");
             String userInput = sc.nextLine().toUpperCase(); // converts input so user can write a1 or A1
 
             try {
@@ -59,8 +56,6 @@ public class HumanPlayer extends Player{
                 int row = Integer.parseInt(userInput.substring(1)) - 1; // Converts the remaining String to an int and subtract with 1 to get row index.
 
                 if (row >= 0 && row < gameBoard.getBoardSize() && col >= 0 && col < gameBoard.getBoardSize()) { // Check to se if row and column is not out of bound.
-                    playerMove[0] = row;
-                    playerMove[1] = col;
                     validInput = true;
 
                     System.out.println(getPlayerName() + " has chosen " + coordinatesToString(row, col));
@@ -73,7 +68,6 @@ public class HumanPlayer extends Player{
             }
         }
 
-        return playerMove;
     }
 
 }
