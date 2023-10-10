@@ -7,9 +7,7 @@ public class GameManager {
     private Player player2;
     private Player currentPlayer;
     private Player startingPlayer;
-
     private final Scanner sc = new Scanner(System.in);
-    private boolean gameIsRunning;
 
 
     public GameManager() {
