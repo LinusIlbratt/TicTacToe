@@ -56,10 +56,13 @@ public class HumanPlayer extends Player {
                 int row = Integer.parseInt(userInput.substring(1)) - 1; // Converts the remaining String to an int and subtract with 1 to get row index.
 
                 if (row >= 0 && row < gameBoard.getBoardSize() && col >= 0 && col < gameBoard.getBoardSize()) { // Check to se if row and column is not out of bound.
-                    validInput = true;
-
-                    System.out.println(getPlayerName() + " has chosen " + GameBoard.coordinatesToString(row, col));
-                    gameBoard.placePlayerMove(row, col, getGameSymbol());
+                    if (gameBoard.isGameBoardEmpty(row, col)) {
+                        System.out.println(getPlayerName() + " has chosen " + GameBoard.coordinatesToString(row, col));
+                        gameBoard.placePlayerMove(row, col, getGameSymbol());
+                        validInput = true;
+                    } else {
+                        System.out.println("Position " + GameBoard.coordinatesToString(row, col) + " is already taken. Please try again.");
+                    }
                 } else {
                     System.out.println("Invalid move. Please enter a move within the board's bounds");
                 }
