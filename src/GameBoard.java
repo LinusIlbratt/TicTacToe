@@ -4,7 +4,7 @@ public class GameBoard {
     private final ArrayList<ArrayList<Character>> gameBoard;
     private final int boardSize;
 
-    // Constructor that initiates an empty dynamic board
+    // Constructor that initiates an empty dynamic board.
     public GameBoard(int boardSize) {
         this.boardSize = boardSize;
         this.gameBoard = new ArrayList<>();
@@ -22,17 +22,20 @@ public class GameBoard {
         return boardSize;
     }
 
+    // If the cell is empty on the specific row and column, we place a player symbol.
     public void placePlayerMove(int row, int col, char gameSymbol) {
         // Places a game symbol on the board if the cell is empty
-        if (isGameBoardEmpty(row, col)) {
-            gameBoard.get(row).set(col, gameSymbol);
-        } else {
-            System.out.println("Could not place " + gameSymbol);
-        }
+        gameBoard.get(row).set(col, gameSymbol);
     }
 
+    // Checks if the cell at the specified row and column is empty.
+    public boolean isGameBoardEmpty(int row, int col) {
+        return gameBoard.get(row).get(col) == ' ';
+    }
+
+    // Checks if the game board is full.
     public boolean isGameBoardFull() {
-        // Check to see if the board is full
+
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
                 if (isGameBoardEmpty(i, j)) {
@@ -43,10 +46,7 @@ public class GameBoard {
         return true;
     }
 
-    public boolean isGameBoardEmpty(int row, int col) {
-        return gameBoard.get(row).get(col) == ' ';
-    }
-
+    // Check the game board for a winning line, horizontally, vertically or diagonally.
     public boolean checkWinner() {
         // Checking rows and columns
         for (int i = 0; i < boardSize; i++) {
@@ -60,6 +60,7 @@ public class GameBoard {
                 checkWinningLines(0, boardSize - 1, 1, -1); // Second diagonal
     }
 
+    // Checks a specific line for a win based on starting point and step direction.
     private boolean checkWinningLines(int startX, int startY, int stepX, int stepY) {
         char gameSymbol = gameBoard.get(startX).get(startY);
         if (gameSymbol == ' ') return false;
@@ -72,6 +73,7 @@ public class GameBoard {
         return true;
     }
 
+    // Reset each cell on the game board to an empty (space) character (' ').
     public void resetGameBoard() {
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
@@ -80,6 +82,7 @@ public class GameBoard {
         }
     }
 
+    // Generates a formatted string representation of the game board for display.
     public String displayGameBoard() {
         StringBuilder printBoard = new StringBuilder();
 
@@ -117,19 +120,19 @@ public class GameBoard {
             // Print horizontal separators except after the last row
             if (i < boardSize - 1) {
                 printBoard.append("   ");  // Extra space for the row number
-                for (int j = 0; j < boardSize - 1; j++) {
-                    printBoard.append("--+");
-                }
+                printBoard.append("--+".repeat(boardSize - 1));
                 printBoard.append("--\n");
             }
         }
         return printBoard.toString();
     }
 
+    // Converts the given row and column coordinates to a string format.
     public static String coordinatesToString(int row, int col) {
         char columnChar = (char) ('A' + col);
         return columnChar + String.valueOf(row + 1);
     }
+
     @Override
     public String toString() {
         return displayGameBoard();
