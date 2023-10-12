@@ -9,9 +9,8 @@ public class GameManager {
     private Player startingPlayer;
     private final Scanner sc = new Scanner(System.in);
 
-
     public GameManager() {
-        // We don't initialize anything with the constructor since we do that with the menu
+        // We don't initialize anything with the constructor. Setting the players to null just to make it more clear.
         this.player1 = null;
         this.player2 = null;
         this.currentPlayer = null;
@@ -100,18 +99,7 @@ public class GameManager {
         }
     }
 
-    public void displayRules() {
-        System.out.println("""
-                Rules:
-                               
-                The game is played on a grid that's 3x3 (or large if chosen).
-                Player 1 is X and Player 2 is 0.
-                Players take turns putting their symbols on the grid.
-                The first player to get 3 (or the board size) of their symbols in a row (up, down, across, or diagonally) wins.
-                If all the cells on the grid are filled and no player has their symbols in a row, then the game is a tie.
-                """);
-    }
-
+    // Determines the size of the game board
     public void chooseGameBoardSize() {
         boolean invalidUserChoice;
 
@@ -143,6 +131,7 @@ public class GameManager {
         } while (invalidUserChoice);
     }
 
+    // Create objects for singel player
     public void initializeSinglePlayer() {
         this.player1 = HumanPlayer.createHumanPlayer('X', sc);
         this.player2 = new ComputerPlayer("Computer", 'O');
@@ -150,6 +139,7 @@ public class GameManager {
         this.currentPlayer = startingPlayer;
     }
 
+    // Create objects for multiplayer
     public void initializeMultiplayer() {
         this.player1 = HumanPlayer.createHumanPlayer('X', sc);
         this.player2 = HumanPlayer.createHumanPlayer('O', sc);
@@ -174,6 +164,18 @@ public class GameManager {
         System.out.println("Current score: ");
         System.out.println(player1.getPlayerName() + ": " + player1.getTotalWins() + " wins.");
         System.out.println(player2.getPlayerName() + ": " + player2.getTotalWins() + " wins.");
+    }
+
+    public void displayRules() {
+        System.out.println("""
+                Rules:
+                               
+                The game is played on a grid that's 3x3 (or larger if chosen).
+                Player 1 have symbol X and Player 2 have symbol O.
+                Players take turns putting their symbols on the grid.
+                The first player to get 3 (or the board size) of their symbols in a row (up, down, across, or diagonally) wins.
+                If all the cells on the grid are filled and no player has their symbols in a row, then the game is a tie.
+                """);
     }
 
 }

@@ -7,7 +7,6 @@ public class ComputerPlayer extends Player {
         super(playerName, gameSymbol);
     }
 
-
     public void makeMove(GameBoard gameBoard) {
         int boardSize = gameBoard.getBoardSize();
         int row, col;
