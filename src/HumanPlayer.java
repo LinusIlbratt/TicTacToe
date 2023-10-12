@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    private Scanner sc;
+    private final Scanner sc;
 
     public HumanPlayer(String playerName, char gameSymbol, Scanner sc) {
         super(playerName, gameSymbol);
@@ -33,11 +33,6 @@ public class HumanPlayer extends Player {
 
         if (!playerName.matches("[\\p{L} '-]+")) {
             System.out.println("Name can only contain letters, spaces, hyphens and apostrophes.");
-            return false;
-        }
-
-        if (playerName.matches(".*\\d.*")) {
-            System.out.println("Name can't contain numbers.");
             return false;
         }
         return true;
