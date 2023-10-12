@@ -131,25 +131,28 @@ public class GameManager {
         } while (invalidUserChoice);
     }
 
+    public void initializePlayers(Player player1, Player player2){
+        this.player1 = player1;
+        this.player2 = player2;
+
+        // Handle identical names if both players are humans
+        if (player1 instanceof HumanPlayer && player2 instanceof  HumanPlayer && player1.getPlayerName().equals(player2.getPlayerName())) {
+            System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + " 2.");
+        }
+
+        this.startingPlayer = this.player1;
+        this.currentPlayer = this.startingPlayer;
+
+    }
+
     // Create objects for singel player
     public void initializeSinglePlayer() {
-        this.player1 = HumanPlayer.createHumanPlayer('X', sc);
-        this.player2 = new ComputerPlayer("Computer", 'O');
-        this.startingPlayer = player1;
-        this.currentPlayer = startingPlayer;
+        initializePlayers(HumanPlayer.createHumanPlayer('X', sc), new ComputerPlayer("Computer", 'O'));
     }
 
     // Create objects for multiplayer
     public void initializeMultiplayer() {
-        this.player1 = HumanPlayer.createHumanPlayer('X', sc);
-        this.player2 = HumanPlayer.createHumanPlayer('O', sc);
-
-        if (player1.getPlayerName().equals(player2.getPlayerName())) {
-            System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + " 2.");
-            player2.setPlayerName(player2.getPlayerName() + " 2");
-        }
-        this.startingPlayer = player1;
-        this.currentPlayer = startingPlayer;
+        initializePlayers(HumanPlayer.createHumanPlayer('X', sc), HumanPlayer.createHumanPlayer('O', sc));
     }
 
     public void switchPlayer() {
