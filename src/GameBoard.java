@@ -22,6 +22,10 @@ public class GameBoard {
         return boardSize;
     }
 
+    public char getCellValue(int row, int col) {
+        return gameBoard.get(row).get(col);
+    }
+
     // If the cell is empty on the specific row and column, we place a player symbol.
     public void placePlayerMove(int row, int col, char gameSymbol) {
         // Places a game symbol on the board if the cell is empty
