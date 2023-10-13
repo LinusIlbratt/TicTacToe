@@ -28,6 +28,8 @@ public class GameManager {
             System.out.println("Choose your game mode");
             System.out.println("1. Single Player");
             System.out.println("2. Multiplayer");
+            System.out.println("3. Human vs AI");
+            System.out.println("4. Computer Battle");
             System.out.print("> ");
 
             String input = sc.nextLine().trim();
@@ -37,11 +39,23 @@ public class GameManager {
 
                 if (userChoice == 1) {
                     initializeSinglePlayer();
+                    chooseGameBoardSize();
                     break;
                 } else if (userChoice == 2) {
                     initializeMultiplayer();
+                    chooseGameBoardSize();
                     break;
-                } else {
+                } else if (userChoice == 3) {
+                    gameBoard = new GameBoard(3);
+                    initializeHumanVsAI(gameBoard);
+                    break;
+                } else if (userChoice == 4) {
+                    gameBoard = new GameBoard(3);
+                    initializeComputerBattle(gameBoard);
+                    break;
+                }
+
+                else {
                     System.out.println("Invalid choice. Try again.");
                 }
             } catch (NumberFormatException e) {
@@ -49,7 +63,7 @@ public class GameManager {
             }
         }
 
-        chooseGameBoardSize();
+
     }
 
     public void startGame() {
@@ -153,6 +167,15 @@ public class GameManager {
     // Create objects for multiplayer
     public void initializeMultiplayer() {
         initializePlayers(HumanPlayer.createHumanPlayer('X', sc), HumanPlayer.createHumanPlayer('O', sc));
+    }
+
+    // Create objects for AI game
+    public void initializeHumanVsAI(GameBoard gameBoard) {
+        initializePlayers(HumanPlayer.createHumanPlayer('X', sc), new MinMaxAIPlayer("T.U.C.", 'O', gameBoard));
+    }
+
+    public void initializeComputerBattle(GameBoard gameBoard) {
+        initializePlayers(new ComputerPlayer("Computer", 'X'), new MinMaxAIPlayer("T.U.C.", 'O', gameBoard));
     }
 
     public void switchPlayer() {
