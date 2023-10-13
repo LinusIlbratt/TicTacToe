@@ -8,6 +8,7 @@ public class GameManager {
     private Player currentPlayer;
     private Player startingPlayer;
     private final Scanner sc = new Scanner(System.in);
+    private static final String YES = "y";
 
     public GameManager() {
         // We don't initialize anything with the constructor. Setting the players to null just to make it more clear.
@@ -73,51 +74,52 @@ public class GameManager {
     }
 
     public void startGame() {
-        String playAgain;
+        boolean playAgain;
         do {
             gameLoop();
             displayTotalWins();
-            System.out.println("Do you want to play again? (y/n)");
-            System.out.print("> ");
-
-            playAgain = sc.nextLine().trim();
-            if (playAgain.equalsIgnoreCase("y")) {
-                if (startingPlayer == player1) {
-                    startingPlayer = player2;
-                } else {
-                    startingPlayer = player1;
-                }
-                currentPlayer = startingPlayer; // Set the currentPlayer to the new starting player
-                gameBoard.resetGameBoard();
+            playAgain = wantsToPlayAgain();
+            if (playAgain) {
+                resetGameForNewRound();
             }
-        } while (playAgain.equalsIgnoreCase("y"));
+        } while (playAgain);
 
     }
 
     public void gameLoop() {
-        boolean gameIsRunning = true;
-        while (gameIsRunning) {
-            // Display the board
-            System.out.println(gameBoard);
-
-            // Let the current player make a move by calling the makeMove function
-            System.out.println("Current player is: " + currentPlayer.getPlayerName());
+        while (true) {
+            displayCurrentState();
             currentPlayer.makeMove(gameBoard);
-
-            // Check if a player has won or if the board is full, then it's a tie
-            if (gameBoard.checkWinner()) {
-                System.out.println(currentPlayer.getPlayerName() + " has won!\n");
-                System.out.println(gameBoard);
-                currentPlayer.incrementWins();
-                gameIsRunning = false;
-            } else if (gameBoard.isGameBoardFull()) {
-                System.out.println("It's a tie!");
-                gameIsRunning = false;
-            } else {
-                // Switching players by calling the switchPlayer method
-                switchPlayer();
-            }
+            if (gameHasEnded()) break;
+            switchPlayer();
         }
+    }
+
+    private boolean gameHasEnded() {
+        if (gameBoard.checkWinner()) {
+            announceWinner();
+            currentPlayer.incrementWins();
+            return true;
+        }
+        if (gameBoard.isGameBoardFull()) {
+            announceTie();
+            return true;
+        }
+        return false;
+    }
+
+    private void announceWinner() {
+        System.out.println(currentPlayer.getPlayerName() + " has won!\n");
+        System.out.println(gameBoard);
+    }
+
+    public void announceTie(){
+        System.out.println("It's a tie!");
+    }
+
+    private void displayCurrentState() {
+        System.out.println(gameBoard);
+        System.out.println("Current player is: " + currentPlayer.getPlayerName());
     }
 
     // Determines the size of the game board
@@ -158,7 +160,7 @@ public class GameManager {
 
         // Handle identical names if both players are humans
         if (player1 instanceof HumanPlayer && player2 instanceof  HumanPlayer && player1.getPlayerName().equals(player2.getPlayerName())) {
-            System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + " 2.");
+            System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + "2.");
         }
 
         this.startingPlayer = this.player1;
@@ -184,7 +186,6 @@ public class GameManager {
     public void initializeComputerBattle(GameBoard gameBoard) {
         initializePlayers(new ComputerPlayer("Computer", 'X'), new MinMaxAIPlayer("T.U.C.", 'O', gameBoard));
     }
-
     public void switchPlayer() {
         if (currentPlayer == player1) {
             currentPlayer = player2;
@@ -209,6 +210,23 @@ public class GameManager {
                 The first player to get 3 (or the board size) of their symbols in a row (up, down, across, or diagonally) wins.
                 If all the cells on the grid are filled and no player has their symbols in a row, then the game is a tie.
                 """);
+    }
+
+    public boolean wantsToPlayAgain() {
+        System.out.println("Do you want to play again? (y/n)");
+        System.out.print("> ");
+        String playAgain = sc.nextLine().trim();
+        return playAgain.equalsIgnoreCase(YES);
+    }
+
+    public void resetGameForNewRound(){
+        if (startingPlayer == player1) {
+            startingPlayer = player2;
+        } else {
+            startingPlayer = player1;
+        }
+        currentPlayer = startingPlayer;
+        gameBoard.resetGameBoard();
     }
 
 }
