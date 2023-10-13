@@ -30,6 +30,7 @@ public class GameManager {
             System.out.println("2. Multiplayer");
             System.out.println("3. Human vs AI");
             System.out.println("4. Computer Battle");
+            System.out.println("5. Exit");
             System.out.print("> ");
 
             String input = sc.nextLine().trim();
@@ -37,26 +38,31 @@ public class GameManager {
             try {
                 int userChoice = Integer.parseInt(input);
 
-                if (userChoice == 1) {
-                    initializeSinglePlayer();
-                    chooseGameBoardSize();
-                    break;
-                } else if (userChoice == 2) {
-                    initializeMultiplayer();
-                    chooseGameBoardSize();
-                    break;
-                } else if (userChoice == 3) {
-                    gameBoard = new GameBoard(3);
-                    initializeHumanVsAI(gameBoard);
-                    break;
-                } else if (userChoice == 4) {
-                    gameBoard = new GameBoard(3);
-                    initializeComputerBattle(gameBoard);
-                    break;
-                }
-
-                else {
-                    System.out.println("Invalid choice. Try again.");
+                switch (userChoice) {
+                    case 1 -> {
+                        initializeSinglePlayer();
+                        chooseGameBoardSize();
+                        startGame();
+                    }
+                    case 2 -> {
+                        initializeMultiplayer();
+                        chooseGameBoardSize();
+                        startGame();
+                    }
+                    case 3 -> {
+                        gameBoard = new GameBoard(3);
+                        initializeHumanVsAI(gameBoard);
+                        startGame();
+                    }
+                    case 4 -> {
+                        gameBoard = new GameBoard(3);
+                        initializeComputerBattle(gameBoard);
+                        startGame();
+                    }
+                    case 5 -> {
+                        System.exit(0);
+                    }
+                    default -> System.out.println("Invalid choice. Try again.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid choice. Enter a number.");
@@ -101,6 +107,7 @@ public class GameManager {
             // Check if a player has won or if the board is full, then it's a tie
             if (gameBoard.checkWinner()) {
                 System.out.println(currentPlayer.getPlayerName() + " has won!\n");
+                System.out.println(gameBoard);
                 currentPlayer.incrementWins();
                 gameIsRunning = false;
             } else if (gameBoard.isGameBoardFull()) {
