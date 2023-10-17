@@ -9,6 +9,11 @@ public class GameManager {
     private Player startingPlayer;
     private final Scanner sc = new Scanner(System.in);
     private static final String YES = "y";
+    private static final int SINGLE_PLAYER = 1;
+    private static final int MULTIPLAYER = 2;
+    private static final int HUMAN_VS_AI = 3;
+    private static final int COMPUTER_VS_AI = 4;
+    private static final int EXIT = 5;
 
     public GameManager() {
         // We don't initialize anything with the constructor. Setting the players to null just to make it more clear.
@@ -18,59 +23,32 @@ public class GameManager {
     }
 
     public void gameMenu() {
-        System.out.println("Welcome to TicTacToe!\n");
-
-        displayRules();
-
-        System.out.println("Press Enter to continue...");
-        sc.nextLine(); // This will wait for the user to press any key
+        welcomeUser();
 
         while (true) {
-            System.out.println("Choose your game mode");
-            System.out.println("1. Single Player");
-            System.out.println("2. Multiplayer");
-            System.out.println("3. Human vs AI");
-            System.out.println("4. Computer Battle");
-            System.out.println("5. Exit");
-            System.out.print("> ");
+            displayMainMenu();
+            int userChoice = getUserChoice();
 
-            String input = sc.nextLine().trim();
-
-            try {
-                int userChoice = Integer.parseInt(input);
-
-                switch (userChoice) {
-                    case 1 -> {
-                        initializeSinglePlayer();
-                        chooseGameBoardSize();
-                        startGame();
-                    }
-                    case 2 -> {
-                        initializeMultiplayer();
-                        chooseGameBoardSize();
-                        startGame();
-                    }
-                    case 3 -> {
-                        gameBoard = new GameBoard(3);
-                        initializeHumanVsAI(gameBoard);
-                        startGame();
-                    }
-                    case 4 -> {
-                        gameBoard = new GameBoard(3);
-                        initializeComputerBattle(gameBoard);
-                        startGame();
-                    }
-                    case 5 -> {
-                        System.exit(0);
-                    }
-                    default -> System.out.println("Invalid choice. Try again.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid choice. Enter a number.");
+            switch (userChoice) {
+                case SINGLE_PLAYER -> handleSinglePlayerMode();
+                case MULTIPLAYER -> handleMultiplayerMode();
+                case HUMAN_VS_AI -> handleHumanVsAIMode();
+                case COMPUTER_VS_AI -> handleComputerVsAIMode();
+                case EXIT -> System.exit(0);
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
 
 
+    }
+
+    public void gameLoop() {
+        while (true) {
+            displayCurrentState();
+            currentPlayer.makeMove(gameBoard);
+            if (gameHasEnded()) break;
+            switchPlayer();
+        }
     }
 
     public void startGame() {
@@ -86,43 +64,10 @@ public class GameManager {
 
     }
 
-    public void gameLoop() {
-        while (true) {
-            displayCurrentState();
-            currentPlayer.makeMove(gameBoard);
-            if (gameHasEnded()) break;
-            switchPlayer();
-        }
-    }
-
-    private boolean gameHasEnded() {
-        if (gameBoard.checkWinner()) {
-            announceWinner();
-            currentPlayer.incrementWins();
-            return true;
-        }
-        if (gameBoard.isGameBoardFull()) {
-            announceTie();
-            return true;
-        }
-        return false;
-    }
-
-    private void announceWinner() {
-        System.out.println(currentPlayer.getPlayerName() + " has won!\n");
-        System.out.println(gameBoard);
-    }
-
-    public void announceTie(){
+    public void announceTie() {
         System.out.println("It's a tie!");
     }
 
-    private void displayCurrentState() {
-        System.out.println(gameBoard);
-        System.out.println("Current player is: " + currentPlayer.getPlayerName());
-    }
-
-    // Determines the size of the game board
     public void chooseGameBoardSize() {
         boolean invalidUserChoice;
 
@@ -154,12 +99,12 @@ public class GameManager {
         } while (invalidUserChoice);
     }
 
-    public void initializePlayers(Player player1, Player player2){
+    public void initializePlayers(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
 
         // Handle identical names if both players are humans
-        if (player1 instanceof HumanPlayer && player2 instanceof  HumanPlayer && player1.getPlayerName().equals(player2.getPlayerName())) {
+        if (player1 instanceof HumanPlayer && player2 instanceof HumanPlayer && player1.getPlayerName().equals(player2.getPlayerName())) {
             System.out.println("Identical names, Player 2 is now " + player2.getPlayerName() + "2.");
         }
 
@@ -183,9 +128,10 @@ public class GameManager {
         initializePlayers(HumanPlayer.createHumanPlayer('X', sc), new MinMaxAIPlayer("T.U.C.", 'O', gameBoard));
     }
 
-    public void initializeComputerBattle(GameBoard gameBoard) {
+    public void initializeComputerVsAI(GameBoard gameBoard) {
         initializePlayers(new ComputerPlayer("Computer", 'X'), new MinMaxAIPlayer("T.U.C.", 'O', gameBoard));
     }
+
     public void switchPlayer() {
         if (currentPlayer == player1) {
             currentPlayer = player2;
@@ -219,7 +165,7 @@ public class GameManager {
         return playAgain.equalsIgnoreCase(YES);
     }
 
-    public void resetGameForNewRound(){
+    public void resetGameForNewRound() {
         if (startingPlayer == player1) {
             startingPlayer = player2;
         } else {
@@ -227,6 +173,78 @@ public class GameManager {
         }
         currentPlayer = startingPlayer;
         gameBoard.resetGameBoard();
+    }
+
+    private void displayMainMenu() {
+        System.out.println("Choose your game mode");
+        System.out.println("1. Single Player");
+        System.out.println("2. Multiplayer");
+        System.out.println("3. Human vs AI");
+        System.out.println("4. Computer Battle");
+        System.out.println("5. Exit");
+        System.out.print("> ");
+    }
+
+    private void welcomeUser() {
+        System.out.println("Welcome to TicTacToe!\n");
+        displayRules();
+        System.out.println("Press Enter to continue...");
+        sc.nextLine(); // This will wait for the user to press any key
+    }
+
+    private int getUserChoice() {
+        try {
+            return Integer.parseInt(sc.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return -1; // invalid choice
+        }
+    }
+
+    private void handleSinglePlayerMode() {
+        initializeSinglePlayer();
+        chooseGameBoardSize();
+        startGame();
+    }
+
+    private void handleMultiplayerMode() {
+        initializeMultiplayer();
+        chooseGameBoardSize();
+        startGame();
+    }
+
+    private void handleHumanVsAIMode() {
+        gameBoard = new GameBoard(3);
+        initializeHumanVsAI(gameBoard);
+        startGame();
+    }
+
+    private void handleComputerVsAIMode() {
+        gameBoard = new GameBoard(3);
+        initializeComputerVsAI(gameBoard);
+        startGame();
+    }
+
+    private boolean gameHasEnded() {
+        if (gameBoard.checkWinner()) {
+            announceWinner();
+            currentPlayer.incrementWins();
+            return true;
+        }
+        if (gameBoard.isGameBoardFull()) {
+            announceTie();
+            return true;
+        }
+        return false;
+    }
+
+    private void announceWinner() {
+        System.out.println(currentPlayer.getPlayerName() + " has won!\n");
+        System.out.println(gameBoard);
+    }
+
+    private void displayCurrentState() {
+        System.out.println(gameBoard);
+        System.out.println("Current player is: " + currentPlayer.getPlayerName());
     }
 
 }
